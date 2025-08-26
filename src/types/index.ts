@@ -25,7 +25,7 @@ export interface ScrollPosition {
 }
 
 export interface UseInfiniteScrollReturn {
-    containerRef: React.RefObject<HTMLDivElement>;
+    containerRef: React.RefObject<HTMLDivElement | null>;
     scrollPosition: ScrollPosition;
     isScrolling: boolean;
 }

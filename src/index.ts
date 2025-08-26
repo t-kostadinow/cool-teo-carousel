@@ -1,4 +1,4 @@
-export { InfiniteCarousel, default as InfiniteCarousel } from './components/InfiniteCarousel';
+export { default as InfiniteCarousel } from './components/InfiniteCarousel';
 export type {
     CarouselImage,
     InfiniteCarouselProps,

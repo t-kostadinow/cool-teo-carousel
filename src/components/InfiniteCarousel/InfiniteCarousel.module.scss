@@ -1,0 +1,117 @@
+// Variables
+$carousel-gap: 16px;
+$border-radius: 8px;
+$transition-duration: 0.2s;
+$mobile-breakpoint: 768px;
+$high-dpi-resolution: 192dpi;
+
+// Colors
+$loading-bg: #f3f4f6;
+$loading-text: #6b7280;
+$error-bg: #fef2f2;
+$error-text: #dc2626;
+$error-border: #fecaca;
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* WebKit */
+    }
+}
+
+@mixin mobile-optimizations {
+    @media (max-width: $mobile-breakpoint) {
+        @content;
+    }
+}
+
+@mixin high-dpi-displays {
+
+    @media (-webkit-min-device-pixel-ratio: 2),
+    (min-resolution: $high-dpi-resolution) {
+        @content;
+    }
+}
+
+// Main carousel styles
+.carousel {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+
+    @include hide-scrollbar;
+
+    @include mobile-optimizations {
+        scroll-snap-type: x mandatory;
+    }
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: var(--carousel-gap, $carousel-gap);
+    padding: 8px 0;
+}
+
+.imageWrapper {
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: transform $transition-duration ease;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+
+    @include mobile-optimizations {
+        scroll-snap-align: center;
+
+        &:hover {
+            transform: none; // Disable hover effects on mobile
+        }
+    }
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+
+    @include high-dpi-displays {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+.loading {
+    @include flex-center;
+    background-color: $loading-bg;
+    color: $loading-text;
+    font-size: 14px;
+}
+
+.error {
+    @include flex-center;
+    background-color: $error-bg;
+    color: $error-text;
+    border: 1px solid $error-border;
+    font-size: 14px;
+}

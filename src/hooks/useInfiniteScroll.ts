@@ -12,7 +12,7 @@ export const useInfiniteScroll = ({
 }: UseInfiniteScrollProps): UseInfiniteScrollReturn => {
     const containerRef = useRef<HTMLDivElement>(null);
     const isResettingRef = useRef(false);
-    const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
     const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({
         scrollLeft: 0,

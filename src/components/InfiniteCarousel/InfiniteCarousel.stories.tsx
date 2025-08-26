@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { InfiniteCarousel } from './InfiniteCarousel';
+import InfiniteCarousel from './InfiniteCarousel';
 import { generatePicsumImages } from '../../utils/imageLoader';
 
 const meta: Meta<typeof InfiniteCarousel> = {

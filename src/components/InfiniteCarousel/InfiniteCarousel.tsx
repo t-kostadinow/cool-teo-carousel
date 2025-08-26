@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { InfiniteCarouselProps, CarouselImage } from '../../types';
-import styles from './InfiniteCarousel.module.css';
+import styles from './InfiniteCarousel.module.scss';
 
 const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     images,
@@ -20,7 +20,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     // Create triple copy of images for infinite loop
     const tripleImages = [...images, ...images, ...images];
 
-    const { containerRef, scrollPosition, isScrolling } = useInfiniteScroll({
+    const { containerRef } = useInfiniteScroll({
         itemCount: images.length,
         onPositionChange: (position) => {
             // Optional: handle position changes
