@@ -5,4 +5,3 @@ export type {
     ScrollPosition,
     UseInfiniteScrollReturn
 } from './types';
-export { useInfiniteScroll } from './hooks/useInfiniteScroll';

@@ -21,7 +21,8 @@
         "noFallthroughCasesInSwitch": true,
         "declaration": true,
         "declarationMap": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "esModuleInterop": true
     },
     "include": [
         "src"

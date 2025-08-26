@@ -10,6 +10,16 @@ export default defineConfig({
             insertTypesEntry: true,
         }),
     ],
+    css: {
+        modules: {
+            localsConvention: 'camelCase',
+        },
+        preprocessorOptions: {
+            scss: {
+                additionalData: '',
+            },
+        },
+    },
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),
