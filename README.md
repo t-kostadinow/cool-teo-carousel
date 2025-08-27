@@ -13,11 +13,7 @@ A reusable, infinite-scroll image carousel for React with TypeScript, featuring 
 - **Customizable**: Configurable dimensions, gaps, and event handlers
 - **Flexible Styling**: External CSS class support for custom theming
 
-## 🚀 Installation
-
-```bash
-npm install cool-teo-carousel
-```
+## 🚀 Getting Started
 
 ## 📖 Usage
 
