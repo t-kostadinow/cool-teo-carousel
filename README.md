@@ -9,8 +9,9 @@ A reusable, infinite-scroll image carousel for React with TypeScript, featuring 
 - **Lazy Loading**: Optimized image loading for performance
 - **TypeScript**: Full type safety and IntelliSense support
 - **SASS Modules**: Modern styling with variables, mixins, and nesting
-- **Accessibility**: ARIA-compliant and keyboard navigation support
+- **Accessibility**: ARIA-compliant with proper alt text support
 - **Customizable**: Configurable dimensions, gaps, and event handlers
+- **Flexible Styling**: External CSS class support for custom theming
 
 ## 🚀 Installation
 
@@ -33,97 +34,71 @@ function App() {
   return (
     <InfiniteCarousel
       images={images}
-      itemWidth={300}
-      itemHeight={200}
+      slidesPerView={2}
       gap={16}
+      loop={true}
+      autoplay={true}
       onImageClick={(image, index) => console.log('Clicked:', image, index)}
     />
   );
 }
 ```
 
-## 🛠️ Development
+### Custom Styling with classNames
 
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
+```tsx
+<InfiniteCarousel
+  images={images}
+  slidesPerView={3}
+  gap={20}
+  classNames={{
+    container: 'my-custom-carousel',
+    viewport: 'my-custom-viewport',
+    carouselContainer: 'my-custom-inner',
+    item: 'my-custom-item',
+    image: 'my-custom-image',
+    loading: 'my-custom-loading'
+  }}
+/>
+```
 
 ### Setup
 
 ```bash
-# Clone the repository
 git clone <repository-url>
 cd cool-teo-carousel
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
-
-# Start Storybook
-npm run storybook
+npm run dev        # Start development server
+npm run storybook  # Start Storybook
 ```
 
-### Available Scripts
+### Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run lint` - Run ESLint
 - `npm run storybook` - Start Storybook
-- `npm run pre-commit` - Run all pre-commit checks manually
+- `npm test` - Run tests
 
 ## 🔒 Pre-commit Hooks
 
 This project uses **Husky** and **lint-staged** to ensure code quality before commits.
 
-### What Gets Checked
+**What gets checked:**
+- ESLint (code style and errors)
+- TypeScript (type checking)
+- Build verification
+- Prettier formatting
 
-1. **ESLint**: Code style and potential errors
-2. **TypeScript**: Type checking and compilation
-3. **Build**: Production build verification
-4. **Prettier**: Code formatting (via lint-staged)
-
-### How It Works
-
-- **Automatic**: Hooks run automatically on every commit
-- **Blocking**: Commits are blocked if any checks fail
-- **Fast**: Only staged files are processed by lint-staged
-
-### Manual Testing
-
+**Manual testing:**
 ```bash
-# Test pre-commit checks manually
-npm run pre-commit
-
-# This runs:
-# 1. npm run lint
-# 2. npx tsc --noEmit
-# 3. npm run build
+npm run pre-commit  # Runs all checks manually
 ```
 
-### Bypassing Hooks (Emergency Only)
-
+**Emergency bypass:**
 ```bash
 git commit --no-verify -m "Emergency fix"
 ```
-
-## 🎨 Styling
-
-The carousel uses SASS modules with:
-
-- **Variables**: Consistent spacing, colors, and timing
-- **Mixins**: Reusable patterns for common styles
-- **Nesting**: Clean, organized CSS structure
-- **Responsive**: Mobile-first media queries
-
-## 📱 Mobile Optimization
-
-- Touch-friendly scrolling
-- Scroll snap for precise positioning
-- Disabled hover effects on mobile
-- Optimized for high-DPI displays
 
 ## 🔧 Configuration
 
@@ -132,11 +107,25 @@ The carousel uses SASS modules with:
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `images` | `CarouselImage[]` | `[]` | Array of images to display |
-| `itemWidth` | `number` | `300` | Width of each image item |
-| `itemHeight` | `number` | `200` | Height of each image item |
-| `gap` | `number` | `16` | Gap between images |
-| `loading` | `'lazy' \| 'eager'` | `'lazy'` | Image loading strategy |
-| `className` | `string` | `''` | Additional CSS classes |
+| `className` | `string` | `''` | Additional CSS classes for the main container |
+| `classNames` | `object` | `{}` | Custom CSS classes for individual elements |
+| `slidesPerView` | `number` | `1` | Number of images to show at once |
+| `gap` | `number` | `16` | Gap between images in pixels |
+| `loading` | `'lazy' \| 'eager'` | `'eager'` | Image loading strategy |
+| `loop` | `boolean` | `false` | Enable infinite looping |
+| `autoplay` | `boolean` | `false` | Enable automatic sliding |
+| `autoplayInterval` | `number` | `3000` | Autoplay interval in milliseconds |
+
+### classNames Object
+
+| Property | Description |
+|----------|-------------|
+| `container` | Main carousel container |
+| `viewport` | Viewport wrapper for the carousel |
+| `carouselContainer` | Inner container that holds the slides |
+| `item` | Individual slide/item container |
+| `image` | Image element within each slide |
+| `loading` | Loading state message |
 
 ### Events
 
@@ -144,25 +133,12 @@ The carousel uses SASS modules with:
 - `onImageLoad`: Fired when an image finishes loading
 - `onImageError`: Fired when an image fails to load
 
-## 🧪 Testing
+## 🎨 Styling & Mobile
 
-```bash
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-```
-
-## 📦 Building
-
-```bash
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
+- SASS modules with variables, mixins, and nesting
+- Mobile-first responsive design
+- Touch-friendly scrolling with scroll snap
+- High-DPI display optimization
 
 ## 🤝 Contributing
 
@@ -172,20 +148,6 @@ npm run preview
 4. Ensure all pre-commit checks pass
 5. Submit a pull request
 
-### Code Style
-
-- Follow ESLint rules
-- Use Prettier for formatting
-- Write meaningful commit messages
-- Include tests for new features
-
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with React 19 and TypeScript
-- Styled with SASS modules
-- Bundled with Vite
-- Quality ensured with Husky and lint-staged

@@ -6,26 +6,25 @@ export interface CarouselImage {
     height?: number;
 }
 
+export interface InfiniteCarouselClassNames {
+    container: string;
+    viewport: string;
+    carouselContainer: string;
+    item: string;
+    image: string;
+    loading: string;
+}
+
 export interface InfiniteCarouselProps {
     images: CarouselImage[];
-    className?: string;
-    itemWidth?: number;
-    itemHeight?: number;
+    classNames?: Partial<InfiniteCarouselClassNames>;
+    slidesPerView?: number;
     gap?: number;
     loading?: 'lazy' | 'eager';
+    loop?: boolean;
+    autoplay?: boolean;
+    autoplayInterval?: number;
     onImageClick?: (image: CarouselImage, index: number) => void;
     onImageLoad?: (image: CarouselImage, index: number) => void;
     onImageError?: (image: CarouselImage, index: number) => void;
-}
-
-export interface ScrollPosition {
-    scrollLeft: number;
-    scrollWidth: number;
-    clientWidth: number;
-}
-
-export interface UseInfiniteScrollReturn {
-    containerRef: React.RefObject<HTMLDivElement | null>;
-    scrollPosition: ScrollPosition;
-    isScrolling: boolean;
 }

@@ -1,2 +1,3 @@
-export { default as InfiniteCarousel } from './InfiniteCarousel';
+export * from './contracts';
 export { default } from './InfiniteCarousel';
+

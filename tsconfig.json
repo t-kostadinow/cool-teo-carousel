@@ -27,6 +27,19 @@
     "include": [
         "src"
     ],
+    "exclude": [
+        "src/stories/**/*",
+        "src/**/*.stories.ts",
+        "src/**/*.stories.tsx",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/**/*.spec.ts",
+        "src/**/*.spec.tsx",
+        "node_modules",
+        "dist",
+        "storybook-static",
+        "coverage"
+    ],
     "references": [
         {
             "path": "./tsconfig.node.json"

@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
 export default defineConfig({
@@ -8,6 +8,17 @@ export default defineConfig({
         react(),
         dts({
             insertTypesEntry: true,
+            exclude: [
+                'src/stories/**/*',
+                'src/**/*.stories.ts',
+                'src/**/*.stories.tsx',
+                'src/**/*.test.ts',
+                'src/**/*.test.tsx',
+                'src/**/*.spec.ts',
+                'src/**/*.spec.tsx',
+                'src/**/*.css',
+                'src/**/*.scss'
+            ],
         }),
     ],
     css: {
@@ -34,6 +45,13 @@ export default defineConfig({
                     react: 'React',
                     'react-dom': 'ReactDOM',
                 },
+            },
+            // Exclude story files and other development-only files from the build
+            input: resolve(__dirname, 'src/index.ts'),
+            onwarn(warning, warn) {
+                // Suppress warnings about unused exports
+                if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+                warn(warning);
             },
         },
     },
