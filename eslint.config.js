@@ -42,6 +42,8 @@ export default [
         NodeJS: 'readonly',
         React: 'readonly',
         __dirname: 'readonly',
+        document: 'readonly',
+        window: 'readonly',
       },
     },
     plugins: {
@@ -89,6 +91,8 @@ export default [
         NodeJS: 'readonly',
         React: 'readonly',
         __dirname: 'readonly',
+        document: 'readonly',
+        window: 'readonly',
       },
     },
   },
