@@ -8,7 +8,6 @@ export interface CarouselImage {
 
 export interface InfiniteCarouselClassNames {
     container: string;
-    viewport: string;
     carouselContainer: string;
     item: string;
     image: string;

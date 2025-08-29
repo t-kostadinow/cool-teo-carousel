@@ -9,6 +9,9 @@ export default {
     transform: {
         '^.+\\.(ts|tsx)$': ['ts-jest', {
             tsconfig: 'tsconfig.json',
+            compilerOptions: {
+                types: ['jest', '@testing-library/jest-dom']
+            }
         }],
     },
     testMatch: [

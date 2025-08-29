@@ -2,6 +2,7 @@ import cn from 'classnames';
 import React from 'react';
 import { InfiniteCarouselProps } from './contracts';
 import { useInfiniteCarousel } from './hooks/useInfiniteCarousel';
+import ImageSlide from './ImageSlide';
 import styles from './InfiniteCarousel.module.scss';
 
 function InfiniteCarousel({
@@ -20,14 +21,14 @@ function InfiniteCarousel({
     const {
         isTransitioning,
         containerRef,
-        transformOffset,
-        swipeHandlers,
+        currentIndex,
+        swipeHandlers
     } = useInfiniteCarousel({
         images,
         slidesPerView,
         loop,
         autoplay,
-        autoplayInterval,
+        autoplayInterval
     });
 
     if (!images.length) {
@@ -58,10 +59,6 @@ function InfiniteCarousel({
             styles['infinite-carousel'],
             classNames.container,
         ),
-        viewport: cn(
-            styles['infinite-carousel__viewport'],
-            classNames.viewport
-        ),
         carouselContainer: cn(
             styles['infinite-carousel__container'],
             {
@@ -79,12 +76,15 @@ function InfiniteCarousel({
         )
     };
 
+    const slideWidth = 100 / slidesPerView;
+    const transformOffset = -(currentIndex * slideWidth);
+    const gapOffset = currentIndex > 0 ? (gap / slidesPerView) * currentIndex : 0;
+
+
     return (
         <div className={mergedClassNames.container} style={{
-            '--carousel-gap': `${gap}px`,
-            '--slides-per-view': slidesPerView.toString()
+            '--carousel-gap': `${gap}px`
         } as React.CSSProperties}>
-            <div className={mergedClassNames.viewport}>
                 <div
                     className={mergedClassNames.carouselContainer}
                     ref={(el) => {
@@ -96,7 +96,7 @@ function InfiniteCarousel({
                         }
                     }}
                     style={{
-                        transform: `translateX(${transformOffset}%)`,
+                        transform: `translateX(calc(${transformOffset}% - ${gapOffset}px))`,
                         transition: isTransitioning ? 'none' : 'transform 0.3s ease'
                     }}
                     {...(Object.fromEntries(
@@ -104,35 +104,24 @@ function InfiniteCarousel({
                     ))}
                 >
                     {images.map((image, index) => (
-                        <div
+                        <ImageSlide
                             key={image.id}
-                            className={mergedClassNames.item}
-                            style={{
-                                width: `calc((100% - (${slidesPerView - 1} * ${gap}px)) / ${slidesPerView})`,
-                                marginRight: index < images.length - 1 ? `${gap}px` : '0'
+                            image={image}
+                            index={index}
+                            totalImages={images.length}
+                            slidesPerView={slidesPerView}
+                            gap={gap}
+                            loading={loading}
+                            classNames={{
+                                item: mergedClassNames.item,
+                                image: mergedClassNames.image
                             }}
-                            onClick={() => onImageClick?.(image, index)}
-                        >
-                            <img
-                                src={image.src}
-                                alt={image.alt || `Image ${index + 1}`}
-                                className={mergedClassNames.image}
-                                style={{
-                                    // If width and height are provided, calculate aspect ratio
-                                    ...(image.width && image.height && {
-                                        aspectRatio: `${image.width} / ${image.height}`,
-                                        objectFit: 'contain'
-                                    })
-                                }}
-                                loading={loading === 'eager' ? 'eager' : (index < slidesPerView ? 'eager' : 'lazy')}
-                                onLoad={() => onImageLoad?.(image, index)}
-                                onError={() => onImageError?.(image, index)}
-                                draggable={false}
-                            />
-                        </div>
+                            onImageClick={onImageClick}
+                            onImageLoad={onImageLoad}
+                            onImageError={onImageError}
+                        />
                     ))}
                 </div>
-            </div>
         </div>
     );
 }

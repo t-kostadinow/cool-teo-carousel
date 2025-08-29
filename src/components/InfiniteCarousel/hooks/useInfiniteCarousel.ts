@@ -13,7 +13,7 @@ interface UseInfiniteCarouselProps {
 interface UseInfiniteCarouselReturn {
     isTransitioning: boolean;
     containerRef: React.RefObject<HTMLDivElement | null>;
-    transformOffset: number;
+    currentIndex: number;
     swipeHandlers: ReturnType<typeof useSwipeable>;
 }
 
@@ -22,7 +22,7 @@ export function useInfiniteCarousel({
     slidesPerView,
     loop,
     autoplay,
-    autoplayInterval,
+    autoplayInterval
 }: UseInfiniteCarouselProps): UseInfiniteCarouselReturn {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -31,62 +31,43 @@ export function useInfiniteCarousel({
     const totalSlides = images.length;
     const maxIndex = Math.max(0, totalSlides - slidesPerView);
 
-    // Calculate the last visible index and first visible index
-    const lastVisibleIndex = currentIndex + slidesPerView - 1;
-    const firstVisibleIndex = currentIndex;
-
-    // Calculate the transform offset for smooth sliding
-    const slideWidth = 100 / slidesPerView;
-    const transformOffset = -(currentIndex * slideWidth);
-
     const goToIndex = useCallback((index: number) => {
         if (!loop) {
-            // No loop - just clamp to boundaries
-            if (index < 0) {
-                setCurrentIndex(0);
-            } else if (index > maxIndex) {
-                setCurrentIndex(maxIndex);
-            } else {
-                setCurrentIndex(index);
-            }
+            const clampedIndex = Math.max(0, Math.min(index, maxIndex));
+            setCurrentIndex(clampedIndex);
             return;
         }
 
-        // Loop logic - handle seamless transitions
         let newIndex = index;
 
         if (index < 0) {
             // Going backwards past the beginning - jump to the end
-            newIndex = totalSlides - slidesPerView;
+            newIndex = maxIndex;
             setIsTransitioning(true);
-            // Reset transition after animation
             setTimeout(() => setIsTransitioning(false), 50);
         } else if (index > maxIndex) {
             // Going forwards past the end - jump to the beginning
             newIndex = 0;
             setIsTransitioning(true);
-            // Reset transition after animation
             setTimeout(() => setIsTransitioning(false), 50);
         }
 
         setCurrentIndex(newIndex);
-    }, [loop, maxIndex, totalSlides, slidesPerView]);
+    }, [loop, maxIndex]);
 
     const goForward = useCallback(() => {
-        // Check if we can go to the next index based on the last visible index
-        if (!loop && lastVisibleIndex >= totalSlides - 1) {
+        if (!loop && currentIndex >= maxIndex) {
             return;
         }
         goToIndex(currentIndex + 1);
-    }, [loop, lastVisibleIndex, totalSlides, currentIndex, goToIndex]);
+    }, [loop, currentIndex, maxIndex, goToIndex]);
 
     const goBack = useCallback(() => {
-        // Check if we can go to the previous index based on the first visible index
-        if (!loop && firstVisibleIndex <= 0) {
+        if (!loop && currentIndex <= 0) {
             return;
         }
         goToIndex(currentIndex - 1);
-    }, [loop, firstVisibleIndex, currentIndex, goToIndex]);
+    }, [loop, currentIndex, goToIndex]);
 
     // Autoplay effect
     useEffect(() => {
@@ -105,10 +86,10 @@ export function useInfiniteCarousel({
         onSwipeStart: (eventData) => {
             // Prevent swipe from starting when at boundaries in no-loop mode
             if (!loop) {
-                if (eventData.dir === 'Left' && lastVisibleIndex >= totalSlides - 1) {
+                if (eventData.dir === 'Left' && currentIndex >= maxIndex) {
                     return false;
                 }
-                if (eventData.dir === 'Right' && firstVisibleIndex <= 0) {
+                if (eventData.dir === 'Right' && currentIndex <= 0) {
                     return false;
                 }
             }
@@ -120,7 +101,7 @@ export function useInfiniteCarousel({
     return {
         isTransitioning,
         containerRef,
-        transformOffset,
+        currentIndex,
         swipeHandlers,
     };
 }

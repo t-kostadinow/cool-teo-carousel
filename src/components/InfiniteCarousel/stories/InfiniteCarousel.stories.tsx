@@ -47,7 +47,7 @@ export const SingleImage: Story = {
 export const MultipleImages: Story = {
     args: {
         images: generateImages({ count: 10 }),
-        slidesPerView: 3,
+        slidesPerView: 2,
         gap: 16
     }
 };
@@ -56,7 +56,7 @@ export const MultipleImages: Story = {
 export const ManyImagesLazyLoading: Story = {
     args: {
         images: generateImages({ count: 50 }),
-        slidesPerView: 2,
+        slidesPerView: 3,
         gap: 20,
         loading: 'lazy'
     },

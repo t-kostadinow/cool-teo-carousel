@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import React from 'react';
 import { CarouselImage } from '../contracts';
 import InfiniteCarousel from '../InfiniteCarousel';
 
@@ -80,8 +81,7 @@ describe('InfiniteCarousel', () => {
         
         const carouselContainer = container.querySelector('.infinite-carousel');
         expect(carouselContainer).toHaveStyle({
-            '--carousel-gap': '32px',
-            '--slides-per-view': '2'
+            '--carousel-gap': '32px'
         });
     });
 
